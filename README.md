@@ -94,7 +94,7 @@ You should have Git installed from the previous section.
         origin https://github.com/UA-DB-Class/go-db-lab-2025-spring.git (fetch)
         origin https://github.com/UA-DB-Class/go-db-lab-2025-spring.git (push)
    ```
-
+athena
    We don't want that remote to be the origin. Instead, we want to change it to point to your repository. To do that, issue the following command:
 
    ```bash
@@ -109,7 +109,7 @@ You should have Git installed from the previous section.
         upstream https://github.com/UA-DB-Class/go-db-lab-2025-spring.git (push)
    ```
 
-4. Lastly we need to give your repository a new `origin` since it is lacking one. Issue the following command, substituting your athena username:
+4. Lastly we need to give your repository a new `origin` since it is lacking one. Issue the following command, substituting your username:
 
    ```bash
     $ git remote add origin https://github.com/[your-username]/[your-repo]
