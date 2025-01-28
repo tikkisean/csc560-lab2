@@ -92,7 +92,7 @@ You should have Git installed from the previous section.
    ```bash
     $ git remote -v
         origin https://github.com/UA-DB-Class/go-db-lab-2025-spring.git (fetch)
-        origin https://github.com/UA-DB-Class/go-db-lab-2024-spring.git (push)
+        origin https://github.com/UA-DB-Class/go-db-lab-2025-spring.git (push)
    ```
 
    We don't want that remote to be the origin. Instead, we want to change it to point to your repository. To do that, issue the following command:
