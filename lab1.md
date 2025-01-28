@@ -1,8 +1,8 @@
 # Lab 1: GoDB
 
-**Assigned:** Thursday September 12, 2024
+**Assigned:** Tuesday January 28, 2025
 
-**Due:** Tuesday October 1, 2024 by 11:59 PM MT
+**Due:** Thursday February 13, 2025 by 11:59 PM MT
 
 <!--
 **Bug Update:** We have a [page](bugs.html) to keep track
@@ -11,7 +11,7 @@ posted there. Some bugs may have already been found, so do take a look at the
 page to get the latest version/ patches for the lab code.
 -->
 
-In the lab assignments in CSC460 you will write a basic database
+In the lab assignments in CSC560 you will write a basic database
 management system called GoDB. For this lab, you will focus on implementing
 the core modules required to access stored data on disk; in future labs, you
 will add support for various query processing operators, as well as
@@ -23,9 +23,8 @@ e.g., C or C++.  In addition, few students in the class will have extensive expe
 so it "levels the playing field", unlike Java where some students  know it very well
 and others have little experience with it.
 
-Because this is the first year we are using Go, there will certainly be bugs in the labs or things
-that are not clear.  Please be patient with us;  we will do our best to be responsive and help you
-resolve issues and ambiguity.
+There might be bugs in the labs or things that are not clear. 
+Please be patient with us; we will do our best to be responsive and help you resolve issues and ambiguity.
 
 For GoDB We have provided you with a set of mostly
 unimplemented methods, which you will need to fill in.
@@ -503,7 +502,7 @@ $ zip -r submission.zip godb/ lab1-writeup-username1.txt lab1-writeup-username2.
 ### 3.3. Submitting a bug
 
 Please submit (friendly!) bug reports to
-[xinyuguo@arizona.edu](mailto:xinyuguo@arizona.edu). When you do, please try to
+[caolei@arizona.edu](mailto:caolei@arizona.edu). When you do, please try to
 include:
 
 * A description of the bug.
