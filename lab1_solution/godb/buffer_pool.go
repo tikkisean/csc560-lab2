@@ -5,9 +5,7 @@ package godb
 //It is also the primary way in which transactions are enforced, by using page
 //level locking (you will not need to worry about this until lab3).
 
-import (
-	"fmt"
-)
+//<silentstrip lab2|lab3|lab4>
 
 // Permissions used to when reading / locking pages
 type RWPerm int
@@ -19,20 +17,26 @@ const (
 
 type BufferPool struct {
 	// TODO: some code goes here
-	logFile *LogFile
+	pages    map[any]Page
+	maxPages int
+	logFile  *LogFile
 }
 
 // Create a new BufferPool with the specified number of pages
 func NewBufferPool(numPages int) (*BufferPool, error) {
 	// TODO: some code goes here
-	return &BufferPool{}, fmt.Errorf("NewBufferPool not implemented") // replace me
+	return &BufferPool{make(map[any]Page), numPages, nil}, nil
+
 }
 
 // Testing method -- iterate through all pages in the buffer pool
 // and flush them using [DBFile.flushPage]. Does not need to be thread/transaction safe.
 // Mark pages as not dirty after flushing them.
 func (bp *BufferPool) FlushAllPages() {
-	// TODO: some code goes here
+	for _, page := range bp.pages {
+		page.getFile().flushPage(page)
+		page.setDirty(-1, false)
+	}
 }
 
 // Abort the transaction, releasing locks. Because GoDB is FORCE/NO STEAL, none
@@ -69,7 +73,35 @@ func (bp *BufferPool) BeginTransaction(tid TransactionID) error {
 // of pages in the BufferPool in a map keyed by the [DBFile.pageKey].
 func (bp *BufferPool) GetPage(file DBFile, pageNo int, tid TransactionID, perm RWPerm) (Page, error) {
 	// TODO: some code goes here
-	return nil, fmt.Errorf("GetPage not implemented") // replace me
+	hashCode := file.pageKey(pageNo)
+	pg, ok := bp.pages[hashCode]
+	if !ok {
+		err := bp.evictPage()
+		if err != nil {
+			return nil, err
+		}
+		pg, err = file.readPage(pageNo)
+		if err != nil {
+			return nil, err
+		}
+		bp.pages[hashCode] = pg
+	}
+	return pg, nil
 }
 
 // Hint: GetPage function need function there: func (bp *BufferPool) evictPage() error
+func (bp *BufferPool) evictPage() error {
+	if len(bp.pages) < bp.maxPages {
+		return nil
+	}
+
+	// evict first clean page
+	for key, page := range bp.pages {
+		if !page.isDirty() {
+			delete(bp.pages, key)
+			return nil
+		}
+	}
+
+	return GoDBError{BufferPoolFullError, "all pages in buffer pool are dirty"}
+}
