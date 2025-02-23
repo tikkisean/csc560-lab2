@@ -1,8 +1,8 @@
 # Lab 2: GoDB Operators
 
-**Assigned:** Friday October 11, 2024
+**Assigned:** Monday February 24, 2025
 
-**Due:** Thursday October 24, 2024 by 11:59 PM
+**Due:** Friday March 7, 2025 by 11:59 PM
 
 In this lab assignment, you will write a set of operators for GoDB to
 implement table modifications (e.g., insert and delete records), filters,
@@ -38,7 +38,7 @@ To start Lab 2, follow these steps:
 1. **Create a new directory** on your machine for the project.
 2. Inside this directory, clone the repository by running the following command:
    ```
-   git clone https://github.com/UA-DB-Class/go-db-lab-2024-fall.git
+   git clone https://github.com/UA-DB-Class/go-db-lab-2025-spring.git
    ```
    
 3. Now, move the following files from your Lab 1 work into the `godb` folder you just cloned:
@@ -550,7 +550,7 @@ $ zip -r submission.zip godb/ lab2-writeup-username1.txt lab2-writeup-username2.
 ### 3.3. Submitting a bug
 
 Please submit (friendly!) bug reports to
-[xinyuguo@arizona.edu](mailto:xinyuguo@arizona.edu). When you do, please try to
+[caolei@arizona.edu](mailto:caolei@arizona.edu). When you do, please try to
 include:
 
 * A description of the bug.
