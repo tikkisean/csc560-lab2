@@ -68,7 +68,7 @@ You should have Git installed from the previous section.
 1. The first thing we have to do is to clone the current lab repository by issuing the following commands on the command line:
 
    ```bash
-    $ git clone https://github.com/UA-DB-Class/go-db-lab-2024-fall.git
+    $ git clone https://github.com/UA-DB-Class/go-db-lab-2025-spring.git
    ```
 
    Now, every time a new lab or patch is released, you can
@@ -91,10 +91,10 @@ You should have Git installed from the previous section.
 
    ```bash
     $ git remote -v
-        origin https://github.com/UA-DB-Class/go-db-lab-2024-fall.git (fetch)
-        origin https://github.com/UA-DB-Class/go-db-lab-2024-fall.git (push)
+        origin https://github.com/UA-DB-Class/go-db-lab-2025-spring.git (fetch)
+        origin https://github.com/UA-DB-Class/go-db-lab-2025-spring.git (push)
    ```
-
+athena
    We don't want that remote to be the origin. Instead, we want to change it to point to your repository. To do that, issue the following command:
 
    ```bash
@@ -105,11 +105,11 @@ You should have Git installed from the previous section.
 
    ```bash
     $ git remote -v
-        upstream https://github.com/UA-DB-Class/go-db-lab-2024-fall.git (fetch)
-        upstream https://github.com/UA-DB-Class/go-db-lab-2024-fall.git (push)
+        upstream https://github.com/UA-DB-Class/go-db-lab-2025-spring.git (fetch)
+        upstream https://github.com/UA-DB-Class/go-db-lab-2025-spring.git (push)
    ```
 
-4. Lastly we need to give your repository a new `origin` since it is lacking one. Issue the following command, substituting your athena username:
+4. Lastly we need to give your repository a new `origin` since it is lacking one. Issue the following command, substituting your username:
 
    ```bash
     $ git remote add origin https://github.com/[your-username]/[your-repo]
@@ -140,8 +140,8 @@ You should have Git installed from the previous section.
 
    ```bash
     $ git remote -v
-        upstream https://github.com/UA-DB-Class/go-db-lab-2024-fall.git (fetch)
-        upstream https://github.com/UA-DB-Class/go-db-lab-2024-fall.git (push)
+        upstream https://github.com/UA-DB-Class/go-db-lab-2025-spring.git (fetch)
+        upstream https://github.com/UA-DB-Class/go-db-lab-2025-spring.git (push)
         origin https://github.com/[your-username]/[your-repo] (fetch)
         origin https://github.com/[your-username]/[your-repo] (push)
    ```
@@ -231,7 +231,7 @@ $ zip -r submission.zip godb/ lab1-writeup-username1.txt lab1-writeup-username2.
 ## <a name="submitting-bug">Submitting a bug</a>
 
 Please submit (friendly!) bug reports to
-[xinyuguo@arizona.edu](mailto:xinyuguo@arizona.edu). When you do, please try to
+[caolei@arizona.edu](mailto:caolei@arizona.edu). When you do, please try to
 include:
 
 * A description of the bug.
@@ -275,7 +275,7 @@ that what you want to see matches up with what you expect.
 
 ## <a name="help">Help!</a>
 
-If at any point you need help with setting all this up, feel free to reach out to [xinyuguo@arizona.edu](mailto:xinyuguo@arizona.edu).
+If at any point you need help with setting all this up, feel free to reach out to [caolei@arizona.edu](mailto:caolei@arizona.edu).
 
 [gitbook]: http://git-scm.com/book/en/Getting-Started-Installing-Git
 
