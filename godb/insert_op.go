@@ -1,15 +1,14 @@
 package godb
 
 type InsertOp struct {
-	file      DBFile
-	op        Operator
-	completed bool
+	file DBFile
+	op   Operator
 }
 
 // Construct an insert operator that inserts the records in the child Operator
 // into the specified DBFile.
 func NewInsertOp(insertFile DBFile, child Operator) *InsertOp {
-	return &InsertOp{file: insertFile, op: child, completed: false}
+	return &InsertOp{file: insertFile, op: child}
 }
 
 // The insert TupleDesc is a one column descriptor with an integer field named "count"
@@ -23,9 +22,11 @@ func (i *InsertOp) Descriptor() *TupleDesc {
 // were inserted.  Tuples should be inserted using the [DBFile.insertTuple]
 // method.
 func (iop *InsertOp) Iterator(tid TransactionID) (func() (*Tuple, error), error) {
+	completed := false
+
 	return func() (*Tuple, error) {
 		count := int64(0)
-		if !iop.completed {
+		if !completed {
 			// do all the insertion stuff
 			it, err := iop.op.Iterator(tid)
 			if err != nil {
@@ -47,7 +48,7 @@ func (iop *InsertOp) Iterator(tid TransactionID) (func() (*Tuple, error), error)
 				}
 			}
 
-			iop.completed = true
+			completed = true
 		}
 
 		return &Tuple{Desc: *iop.Descriptor(), Fields: []DBValue{IntField{count}}}, nil
