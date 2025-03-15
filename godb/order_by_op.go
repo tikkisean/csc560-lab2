@@ -1,7 +1,6 @@
 package godb
 
 import (
-	"fmt"
 	"sort"
 )
 
@@ -63,7 +62,7 @@ func (ms *multiSorter) Less(i, j int) bool {
 	p, q := &ms.data[i], &ms.data[j]
 	// Try all but the last comparison.
 	var k int
-	for k = 0; k < len(ms.orderBy); k++ {
+	for k = 0; k < len(ms.orderBy)-1; k++ {
 		orderBy := ms.orderBy[k]
 		var cmp orderByState
 
@@ -156,5 +155,5 @@ func (o *OrderBy) Iterator(tid TransactionID) (func() (*Tuple, error), error) {
 		retVal := sorted[i]
 		i++
 		return &retVal, nil
-	}, fmt.Errorf("order_by_op.Iterator not implemented") //replace me
+	}, nil
 }
