@@ -1,9 +1,5 @@
 package godb
 
-import (
-	"fmt"
-)
-
 type EqualityJoin struct {
 	// Expressions that when applied to tuples from the left or right operators,
 	// respectively, return the value of the left or right side of the join
@@ -28,8 +24,7 @@ func NewJoin(left Operator, leftField Expr, right Operator, rightField Expr, max
 //
 // HINT: use [TupleDesc.merge].
 func (hj *EqualityJoin) Descriptor() *TupleDesc {
-	// TODO: some code goes here
-	return nil
+	return (*hj.left).Descriptor().merge((*hj.right).Descriptor())
 }
 
 // Join operator implementation. This function should iterate over the results
@@ -50,6 +45,62 @@ func (hj *EqualityJoin) Descriptor() *TupleDesc {
 // out. To pass this test, you will need to use something other than a nested
 // loops join.
 func (joinOp *EqualityJoin) Iterator(tid TransactionID) (func() (*Tuple, error), error) {
-	// TODO: some code goes here
-	return nil, fmt.Errorf("join_op.Iterator not implemented")
+	leftIter, err := (*joinOp.left).Iterator(tid)
+	if err != nil {
+		return nil, err
+	}
+
+	rightIter, err := (*joinOp.right).Iterator(tid)
+	if err != nil {
+		return nil, err
+	}
+
+	leftTuple, err := leftIter()
+	if err != nil {
+		return nil, err
+	}
+	if leftTuple == nil {
+		return nil, nil
+	}
+
+	return func() (*Tuple, error) {
+		for {
+			leftVal, err := joinOp.leftField.EvalExpr(leftTuple)
+			if err != nil {
+				return nil, err
+			}
+
+			for {
+				rightTuple, err := rightIter()
+				if err != nil {
+					return nil, err
+				}
+				if rightTuple == nil {
+					leftTuple, err = leftIter()
+					if err != nil {
+						return nil, err
+					}
+					if leftTuple == nil {
+						return nil, nil
+					}
+
+					rightIter, err = (*joinOp.right).Iterator(tid)
+					if err != nil {
+						return nil, err
+					}
+
+					break
+				}
+
+				rightVal, err := joinOp.rightField.EvalExpr(rightTuple)
+				if err != nil {
+					return nil, err
+				}
+
+				if leftVal.EvalPred(rightVal, OpEq) {
+					return joinTuples(leftTuple, rightTuple), nil
+				}
+			}
+		}
+	}, nil
 }

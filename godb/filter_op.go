@@ -22,7 +22,6 @@ func (f *Filter) Descriptor() *TupleDesc {
 //
 // HINT: you can use [types.evalPred] to compare two values.
 func (f *Filter) Iterator(tid TransactionID) (func() (*Tuple, error), error) {
-	// TODO: some code goes here
 	childItr, err := f.child.Iterator(tid)
 	if err != nil {
 		return nil, err
