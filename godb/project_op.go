@@ -1,11 +1,14 @@
 package godb
 
-import "fmt"
+import (
+	"fmt"
+)
 
 type Project struct {
 	selectFields []Expr // required fields for parser
 	outputNames  []string
 	child        Operator
+	distinct     bool
 	//add additional fields here
 	// TODO: some code goes here
 }
@@ -17,8 +20,7 @@ type Project struct {
 // distinct is for noting whether the projection reports only distinct results,
 // and child is the child operator.
 func NewProjectOp(selectFields []Expr, outputNames []string, distinct bool, child Operator) (Operator, error) {
-	// TODO: some code goes here
-	return nil, nil
+	return &Project{selectFields: selectFields, outputNames: outputNames, child: child, distinct: distinct}, nil
 }
 
 // Return a TupleDescriptor for this projection. The returned descriptor should
@@ -27,9 +29,29 @@ func NewProjectOp(selectFields []Expr, outputNames []string, distinct bool, chil
 //
 // HINT: you can use expr.GetExprType() to get the field type
 func (p *Project) Descriptor() *TupleDesc {
-	// TODO: some code goes here
-	return nil
+	fields := []FieldType{}
 
+	if len(p.outputNames) != len(p.selectFields) {
+		fmt.Errorf("The length of the outputNames and selectFields arrays are not the same.")
+	}
+
+	for i, val := range p.selectFields {
+		fieldType := val.GetExprType()
+		fieldType.Fname = p.outputNames[i]
+		fields = append(fields, fieldType)
+	}
+
+	return &TupleDesc{fields}
+
+}
+
+func contains(s []Tuple, t Tuple) bool {
+	for _, seen := range s {
+		if seen.equals(&t) {
+			return true
+		}
+	}
+	return false
 }
 
 // Project operator implementation. This function should iterate over the
@@ -39,6 +61,52 @@ func (p *Project) Descriptor() *TupleDesc {
 // distinct tuples seen so far. Note that support for the distinct keyword is
 // optional as specified in the lab 2 assignment.
 func (p *Project) Iterator(tid TransactionID) (func() (*Tuple, error), error) {
- // TODO: some code goes here
-	return nil, fmt.Errorf("project_op.Iterator not implemented")
+	// make this not a slice
+	seen := []Tuple{}
+	fields := []FieldType{}
+
+	for _, val := range p.selectFields {
+		fieldType := val.GetExprType()
+		fields = append(fields, fieldType)
+	}
+
+	it, err := p.child.Iterator(tid)
+	if err != nil {
+		return nil, err
+	}
+
+	return func() (*Tuple, error) {
+
+		for {
+			tup, err := it()
+			if err != nil {
+				return nil, err
+			}
+			if tup == nil {
+				return nil, nil
+			}
+
+			outTup, err := tup.project(fields)
+			if err != nil {
+				return nil, err
+			}
+
+			if contains(seen, *outTup) {
+				continue
+			} else {
+				seenDescFields := make([]FieldType, len(outTup.Desc.Fields))
+				copy(seenDescFields, outTup.Desc.Fields)
+
+				seen = append(seen, Tuple{
+					TupleDesc{seenDescFields}, outTup.Fields, outTup.Rid})
+
+				// reset the names using the outputNames
+				for i := range outTup.Desc.Fields {
+					outTup.Desc.Fields[i].Fname = p.outputNames[i]
+				}
+
+				return outTup, nil
+			}
+		}
+	}, nil
 }
