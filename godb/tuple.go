@@ -341,16 +341,19 @@ func (t *Tuple) project(fields []FieldType) (*Tuple, error) {
 	// TODO: some code goes here
 
 	fieldVals := make([]DBValue, len(fields))
+	fieldTypes := make([]FieldType, len(fields))
 	dstIdx := 0
+
 	for _, f1 := range fields {
 		srcIdx, err := findFieldInTd(f1, &t.Desc)
 		if err != nil {
 			return nil, err
 		}
 		fieldVals[dstIdx] = t.Fields[srcIdx]
+		fieldTypes[dstIdx] = fields[dstIdx]
 		dstIdx++
 	}
-	return &Tuple{TupleDesc{fields}, fieldVals, nil}, nil
+	return &Tuple{TupleDesc{fieldTypes}, fieldVals, nil}, nil
 }
 
 // Compute a key for the tuple to be used in a map structure
